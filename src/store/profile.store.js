@@ -10,8 +10,7 @@ export const profileStore = {
     }
   },
   actions: {
-    async getProfile({ commit, rootState }) {
-      const { accessToken } = rootState.auth;
+    async getProfile({ commit }, accessToken) {
       const result = await profileApi.getProfile(accessToken);
       commit('setCurrentUser', result);
     }

@@ -1,9 +1,5 @@
 <template>
   <form @submit="handleSubmit" ref="form">
-    <div v-if="userIsLogged">
-      <h2 v-if="currentUser">Username: {{currentUser.username}}</h2>
-      <hr />
-    </div>
     <div>
       <label for="username-id">Usuário:</label>
       <input type="text" name="username" id="username-id" v-model="username" />
@@ -19,7 +15,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data: function() {
@@ -28,24 +24,10 @@ export default {
       password: null
     };
   },
-  computed: {
-    ...mapState({
-      currentUser: state => state.profile.currentUser
-    }),
-    ...mapGetters(["userIsLogged"])
-  },
-  async mounted() {
-    if (this.userIsLogged) {
-      setTimeout(() => {
-        this.logOut();
-      }, 1500);
-    }
-  },
   methods: {
-    ...mapActions(["logIn", "logOut", "getProfile"]),
+    ...mapActions(["logIn"]),
     async handleSubmit(event) {
       event.preventDefault();
-
       const data = {
         username: this.username,
         password: this.password
@@ -53,7 +35,7 @@ export default {
 
       try {
         await this.logIn(data);
-        await this.getProfile();
+        this.$emit("onLogin");
       } catch (error) {
         console.warn(error);
       }

@@ -1,5 +1,5 @@
-import { AuthAPI } from "./auth.api";
-import { ProfileAPI } from "./profile.api";
+import { AuthAPI } from "./AuthAPI";
+import { ProfileAPI } from "./ProfileAPI";
 
 export const authApi = new AuthAPI();
 export const profileApi = new ProfileAPI();

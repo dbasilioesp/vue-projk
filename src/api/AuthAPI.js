@@ -1,4 +1,6 @@
-export class AuthAPI {
+import { API } from "./API";
+
+export class AuthAPI extends API {
   async logIn(data) {
     const options = {
       method: "POST",
@@ -7,7 +9,7 @@ export class AuthAPI {
       credentials: "omit"
     };
 
-    const response = await fetch("http://localhost:3000/auth/login", options);
+    const response = await this.fetch("auth/login", options);
 
     if (response.ok) {
       return response.json();

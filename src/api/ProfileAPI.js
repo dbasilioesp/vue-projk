@@ -1,4 +1,6 @@
-export class ProfileAPI {
+import { API } from "./API";
+
+export class ProfileAPI extends API {
   async getProfile(accessToken) {
     const options = {
       method: "GET",
@@ -8,7 +10,7 @@ export class ProfileAPI {
       }
     };
 
-    const response = await fetch("http://localhost:3000/profile", options);
+    const response = this.fetch("profile", options);
 
     if (response.ok) {
       return response.json();
