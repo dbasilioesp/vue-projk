@@ -10,7 +10,7 @@ export class ProfileAPI extends API {
       }
     };
 
-    const response = this.fetch("profile", options);
+    const response = await this.fetch("profile", options);
 
     if (response.ok) {
       return response.json();
