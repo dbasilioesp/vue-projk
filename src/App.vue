@@ -2,7 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link>
+      <router-link to="/profile">Perfil</router-link>
+      <router-link to="/personagens">Personagens</router-link>
     </div>
     <router-view />
   </div>
@@ -40,7 +41,7 @@
 input[type="text"],
 input[type="password"] {
   height: 40px;
-  border: 1px solid #f5f5f5;
+  border: 1px solid #cbccc6;
   border-radius: 4px;
   padding: 0 15px;
 }
