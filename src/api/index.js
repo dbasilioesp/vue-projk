@@ -4,4 +4,4 @@ import { CharacterAPI } from "./CharacterAPI";
 
 export const authApi = new AuthAPI();
 export const profileApi = new ProfileAPI();
-export const characterAPI = new CharacterAPI();
+export const characterApi = new CharacterAPI();
