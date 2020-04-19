@@ -1,24 +1,45 @@
 <template>
-  <form @submit="handleSubmit" ref="form">
-    <input type="hidden" name="id" v-model="myId" />
-    <div>
-      <label for="name-id">Nome:</label>
-      <input type="text" name="name" id="name-id" v-model="myName" />
-    </div>
-    <div>
-      <label for="description-id">Descrição:</label>
-      <textarea name="description" id="description-id" v-model="myDescription" cols="30" rows="8"></textarea>
-    </div>
-    <div>
-      <button type="submit">Criar</button>
-    </div>
-  </form>
+  <FormTheme>
+    <form @submit="handleSubmit" ref="form">
+      <input type="hidden" name="id" v-model="myId" />
+      <div>
+        <label for="name-id">Nome:</label>
+        <input
+          type="text"
+          name="name"
+          autocomplete="off"
+          id="name-id"
+          v-model="myName"
+        />
+      </div>
+      <div>
+        <label for="description-id">Descrição:</label>
+        <textarea
+          name="description"
+          id="description-id"
+          v-model="myDescription"
+          cols="30"
+          rows="6"
+        ></textarea>
+      </div>
+      <div class="submit-container">
+        <Button class="" type="submit">Criar</Button>
+      </div>
+    </form>
+  </FormTheme>
 </template>
 
 <script>
 import { characterApi } from "@/api";
+import { mapState } from "vuex";
+import Button from "@/components/Button";
+import FormTheme from "@/components/forms/FormTheme";
 
 export default {
+  components: {
+    FormTheme,
+    Button
+  },
   props: {
     id: { type: String, default: null },
     name: { type: String, default: null },
@@ -30,6 +51,11 @@ export default {
       myName: null,
       myDescription: null
     };
+  },
+  computed: {
+    ...mapState({
+      accessToken: state => state.auth.accessToken
+    })
   },
   created() {
     this.myId = this.id;
@@ -48,9 +74,9 @@ export default {
       let character;
 
       if (this.myId) {
-        character = await characterApi.update(data);
+        character = await characterApi.update(data, this.accessToken);
       } else {
-        character = await characterApi.create(data);
+        character = await characterApi.create(data, this.accessToken);
       }
 
       this.$emit("onFinish", character);
@@ -58,24 +84,3 @@ export default {
   }
 };
 </script>
-
-<style lang="css" scoped>
-form {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: 30px;
-}
-
-label {
-  display: block;
-  text-align: left;
-  margin-bottom: 5px;
-  font-size: 18px;
-}
-
-input {
-  margin-bottom: 20px;
-}
-</style>

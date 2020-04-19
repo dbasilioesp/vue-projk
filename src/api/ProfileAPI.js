@@ -1,7 +1,7 @@
 import { API } from "./API";
 
 export class ProfileAPI extends API {
-  async getProfile(accessToken) {
+  async getProfile(accessToken, userId) {
     const options = {
       method: "GET",
       headers: {
@@ -10,13 +10,12 @@ export class ProfileAPI extends API {
       }
     };
 
-    const response = await this.fetch("profile", options);
+    const response = await this.fetch(`users/${userId}`, options);
 
     if (response.ok) {
       return response.json();
     } else {
-      throw new Error(`${response.status} - ${response.statusText}`)
+      throw new Error(`${response.status} - ${response.statusText}`);
     }
-
   }
 }

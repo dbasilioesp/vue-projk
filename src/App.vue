@@ -1,24 +1,42 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link>|
-      <router-link to="/profile">Perfil</router-link>|
-      <router-link to="/personagens">Personagens</router-link>
-    </div>
     <router-view />
   </div>
 </template>
 
 <style>
 :root {
+  --sun-color: #f5b971;
+  /* --moon-color: #85a392; */
+  --moon-color: #2c3e50;
+  --paper-color: #ffecc7;
+  --sky-color: #fdd998;
+  --header-size: 70px;
+  --title-color: var(--moon-color);
+  --button-bg-color: var(--moon-color);
+  --button-color: var(--paper-color);
+  --font-primary: "Baloo Paaji 2";
 }
 
 * {
   box-sizing: border-box;
 }
 
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-primary);
+}
+
+button,
+label,
+input {
+  font-family: var(--font-primary);
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -42,13 +60,5 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
-}
-
-input[type="text"],
-input[type="password"] {
-  height: 40px;
-  border: 1px solid #cbccc6;
-  border-radius: 4px;
-  padding: 0 15px;
 }
 </style>

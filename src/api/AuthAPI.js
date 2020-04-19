@@ -2,19 +2,24 @@ import { API } from "./API";
 
 export class AuthAPI extends API {
   async logIn(data) {
-    const options = {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-      credentials: "omit"
-    };
+    data.strategy = "local";
 
-    const response = await this.fetch("auth/login", options);
+    const response = await this.post("authentication", data);
 
     if (response.ok) {
       return response.json();
     } else {
-      throw new Error(`${response.status} - ${response.statusText}`)
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+  }
+
+  async signUp(data) {
+    const response = await this.post("users", data);
+
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error(`${response.status} - ${response.statusText}`);
     }
   }
 }

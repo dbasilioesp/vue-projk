@@ -1,6 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "@/views/Home.vue";
+import Home from "@/views/home/Home.vue";
+import SignIn from "@/views/home/SignIn";
+import SignUp from "@/views/home/SignUp";
+import HomeNavigation from "@/views/home/HomeNavigation";
 import Profile from "@/views/Profile";
 import Characters from "@/views/Characters";
 
@@ -10,17 +13,38 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    redirect: { name: "HomeNavigation" },
+    children: [
+      {
+        path: "nav",
+        name: "HomeNavigation",
+        component: HomeNavigation
+      },
+      {
+        path: "signin",
+        name: "SignIn",
+        component: SignIn
+      },
+      {
+        path: "signup",
+        name: "SignUp",
+        component: SignUp
+      }
+    ]
   },
   {
     path: "/profile",
     name: "Profile",
-    component: Profile
-  },
-  {
-    path: "/personagens",
-    name: "Personagem",
-    component: Characters
+    component: Profile,
+    redirect: { name: "Personagens" },
+    children: [
+      {
+        path: "personagens",
+        name: "Personagens",
+        component: Characters
+      }
+    ]
   },
   {
     path: "/about",

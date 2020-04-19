@@ -1,19 +1,17 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import VuexPersistence from 'vuex-persist'
-import { authStore } from './auth.store'
-import { profileStore } from './profile.store'
+import Vue from "vue";
+import Vuex from "vuex";
+import VuexPersistence from "vuex-persist";
+import { authStore } from "./auth.store";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
-})
+});
 
 export default new Vuex.Store({
   modules: {
-    auth: authStore,
-    profile: profileStore
+    auth: authStore
   },
   plugins: [vuexLocal.plugin]
-})
+});

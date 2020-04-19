@@ -1,14 +1,19 @@
 <template>
   <div class="container">
     <div class="content">
-      <h1>Characters</h1>
+      <div class="header-nav">
+        <h1>Personagens</h1>
+        <Button v-if="!formEnabled" @click="newCharacter">+</Button>
+      </div>
+      <hr />
       <div class="list" v-if="listEnabled">
         <div class="item" v-for="character in characters" :key="character.id">
           <div>{{ character.name }} - {{ character.description }}</div>
-          <button @click="editCharacter(character)">Editar</button>
+          <Button @click="editCharacter(character)">Editar</Button>
         </div>
-        <hr />
-        <button type="button" @click="newCharacter">Novo Personagem</button>
+        <div v-if="characters.length === 0">
+          Crie seu primeiro personagem clicando no botão "+".
+        </div>
       </div>
       <FormCharacter
         v-if="formEnabled"
@@ -23,11 +28,14 @@
 
 <script>
 import { characterApi } from "@/api";
+import { mapState } from "vuex";
 import FormCharacter from "@/components/forms/FormCharacter";
+import Button from "@/components/Button";
 
 export default {
   components: {
-    FormCharacter
+    FormCharacter,
+    Button
   },
   data() {
     return {
@@ -38,6 +46,15 @@ export default {
       listEnabled: true,
       formEnabled: false
     };
+  },
+  computed: {
+    title() {
+      return this.formEnabled ? "Criar personagem" : "Personagens";
+    },
+    ...mapState({
+      accessToken: state => state.auth.accessToken,
+      currentUser: state => state.auth.currentUser
+    })
   },
   async mounted() {
     return this.updateList();
@@ -60,8 +77,8 @@ export default {
     async updateList() {
       this.formEnabled = false;
       this.listEnabled = true;
-      const result = await characterApi.findAll();
-      this.characters = result.characters.records;
+      const result = await characterApi.find(this.accessToken);
+      this.characters = result.data;
     }
   }
 };
@@ -72,16 +89,26 @@ export default {
   display: flex;
   flex: 1;
   justify-content: center;
-  max-width: 310px;
   width: 100%;
   margin: auto;
   padding-top: 0px;
   padding-bottom: 8vh;
 }
+
 .content {
-  max-width: 420px;
   width: 100%;
 }
+
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    margin: 0;
+  }
+}
+
 .list {
   text-align: left;
   margin-top: 40px;
