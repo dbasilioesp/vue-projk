@@ -1,10 +1,8 @@
-export class API {
-  constructor() {
-    this.baseUrl = process.env.VUE_APP_API_URL;
-  }
+const baseUrl = process.env.VUE_APP_API_URL;
 
-  async fetch(uri, options) {
-    const response = await fetch(`${this.baseUrl}/${uri}`, options);
+export default class API {
+  static async fetch(uri, options) {
+    const response = await fetch(`${baseUrl}/${uri}`, options);
 
     if (response.ok) {
       return response.json();
@@ -13,19 +11,31 @@ export class API {
     }
   }
 
-  get(uri, params, accessToken = null) {
+  static get(uri, params, accessToken = null) {
     const options = this.createOptions({ method: "GET", accessToken });
     return this.fetch(uri, options);
   }
 
-  post(uri, data, accessToken = null) {
+  static post(uri, data, accessToken = null) {
     const options = this.createOptions({
       method: "POST",
       data,
       accessToken
     });
 
-    return this.fetch(`${this.baseUrl}/${uri}`, options);
+    return this.fetch(uri, options);
+  }
+
+  static patch(uri, id, data, accessToken) {
+    this.clean(data);
+
+    const options = this.createOptions({
+      method: "PATCH",
+      data,
+      accessToken
+    });
+
+    return this.fetch(`${uri}/${id}`, options);
   }
 
   async postGraphQL(data) {
@@ -39,7 +49,15 @@ export class API {
     }
   }
 
-  createOptions({ method, data, accessToken }) {
+  static clean(obj) {
+    Object.keys(obj).forEach(key => {
+      if (obj[key] === undefined || obj[key] === null) {
+        delete obj[key];
+      }
+    });
+  }
+
+  static createOptions({ method, data, accessToken }) {
     const options = {
       method: method,
       headers: { "Content-Type": "application/json" }

@@ -1,25 +1,12 @@
-import { API } from "./API";
+import api from "./API";
 
-export class AuthAPI extends API {
+export class AuthAPI {
   async logIn(data) {
     data.strategy = "local";
-
-    const response = await this.post("authentication", data);
-
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error(`${response.status} - ${response.statusText}`);
-    }
+    return api.post("authentication", data);
   }
 
   async signUp(data) {
-    const response = await this.post("users", data);
-
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error(`${response.status} - ${response.statusText}`);
-    }
+    return api.post("users", data);
   }
 }

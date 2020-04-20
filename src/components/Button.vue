@@ -1,5 +1,5 @@
 <template>
-  <button :type="type" @click="onClick">
+  <button :type="type" :class="aspect" @click="onClick">
     <slot />
   </button>
 </template>
@@ -10,6 +10,10 @@ export default {
     type: {
       type: String,
       default: "button"
+    },
+    aspect: {
+      type: String,
+      validator: val => ["clean", "just-icon"].includes(val)
     }
   },
   methods: {
@@ -29,13 +33,22 @@ button {
   font-size: 20px;
   padding: 0 25px;
   border-radius: 4px;
-  border: 1px solid transparent;
+  border: 3px solid transparent;
   cursor: pointer;
   color: var(--button-color);
   background-color: var(--button-bg-color);
 
   &:hover {
     border: 3px solid var(--sun-color);
+  }
+
+  &.clean {
+    background: transparent;
+    color: var(--button-bg-color);
+  }
+
+  &.just-icon {
+    padding: 0 15px;
   }
 }
 </style>

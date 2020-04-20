@@ -49,12 +49,13 @@
 
     a {
       display: block;
+      text-align: center;
       margin-top: 10px;
-      color: var(--paper-color);
+      color: var(--moon-color);
       text-decoration: none;
 
       &:hover {
-        color: var(--sun-color);
+        text-decoration: underline;
       }
     }
   }

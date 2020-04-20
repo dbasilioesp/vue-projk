@@ -5,7 +5,9 @@ import SignIn from "@/views/home/SignIn";
 import SignUp from "@/views/home/SignUp";
 import HomeNavigation from "@/views/home/HomeNavigation";
 import Profile from "@/views/Profile";
-import Characters from "@/views/Characters";
+import Personagens from "@/views/personagens/Personagens";
+import PersonagemForm from "@/views/personagens/PersonagemForm";
+import PersonagensList from "@/views/personagens/PersonagensList";
 
 Vue.use(VueRouter);
 
@@ -42,7 +44,26 @@ const routes = [
       {
         path: "personagens",
         name: "Personagens",
-        component: Characters
+        redirect: { name: "ListaPersonagens" },
+        component: Personagens,
+        children: [
+          {
+            path: "lista",
+            name: "ListaPersonagens",
+            component: PersonagensList
+          },
+          {
+            path: "novo",
+            name: "NovoPersonagem",
+            component: PersonagemForm
+          },
+          {
+            path: "editar/:id",
+            name: "EditarPersonagem",
+            component: PersonagemForm,
+            props: true
+          }
+        ]
       }
     ]
   },

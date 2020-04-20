@@ -1,7 +1,6 @@
 <template>
   <FormTheme>
     <form @submit="handleSubmit" ref="form">
-      <input type="hidden" name="id" v-model="myId" />
       <div>
         <label for="name-id">Nome:</label>
         <input
@@ -9,7 +8,7 @@
           name="name"
           autocomplete="off"
           id="name-id"
-          v-model="myName"
+          v-model="name"
         />
       </div>
       <div>
@@ -17,13 +16,14 @@
         <textarea
           name="description"
           id="description-id"
-          v-model="myDescription"
+          v-model="description"
           cols="30"
           rows="6"
         ></textarea>
       </div>
       <div class="submit-container">
-        <Button class="" type="submit">Criar</Button>
+        <Button type="submit">Criar</Button>
+        <Button type="button" aspect="clean" @click="goBack">Voltar</Button>
       </div>
     </form>
   </FormTheme>
@@ -41,45 +41,49 @@ export default {
     Button
   },
   props: {
-    id: { type: String, default: null },
-    name: { type: String, default: null },
-    description: { type: String, default: null }
+    id: { type: String, default: null }
   },
   data() {
     return {
-      myId: null,
-      myName: null,
-      myDescription: null
+      name: null,
+      description: null
     };
   },
   computed: {
     ...mapState({
-      accessToken: state => state.auth.accessToken
+      accessToken: state => state.auth.accessToken,
+      currentUser: state => state.auth.currentUser
     })
   },
-  created() {
-    this.myId = this.id;
-    this.myName = this.name;
-    this.myDescription = this.description;
+  async created() {
+    if (this.id) {
+      const char = await characterApi.get(this.id, this.accessToken);
+      this.name = char.name;
+      this.description = char.description;
+    }
   },
   methods: {
     async handleSubmit(event) {
       event.preventDefault();
       const data = {
-        id: this.myId,
-        name: this.myName,
-        description: this.myDescription
+        name: this.name,
+        owner: this.currentUser._id,
+        description: this.description,
+        figure: undefined
       };
 
-      let character;
-
-      if (this.myId) {
-        character = await characterApi.update(data, this.accessToken);
+      if (this.id) {
+        console.log("updating character");
+        await characterApi.update(this.id, data, this.accessToken);
       } else {
-        character = await characterApi.create(data, this.accessToken);
+        console.log("creating character");
+        await characterApi.create(data, this.accessToken);
       }
 
-      this.$emit("onFinish", character);
+      this.$router.push({ name: "ListaPersonagens" });
+    },
+    goBack() {
+      this.$router.go(-1);
     }
   }
 };
